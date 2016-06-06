@@ -24,7 +24,7 @@ def make_dataframe(blocks):
 def make_csv(out_dataframe, file):
 	csv_file_pre = file.strip(".json")
 	csv_file = csv_file_pre.strip('behavioral')
-	pd.DataFrame.to_csv(out_dataframe, path_or_buf = "data/" + csv_file + ".csv")
+	pd.DataFrame.to_csv(out_dataframe, path_or_buf = "data" + csv_file + ".csv")
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description = "Take .json files and covert to .csv")
