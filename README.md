@@ -8,6 +8,7 @@ Theory of Mind Localizer- Adapted from MATLAB code provided by Saxe Lab at MIT.
 4. data_analysis_loc imports .csv file, sorts trials by belief and photo condition, correct and incorrect responses and produces boxplots for comparison (saved in "boxplots" directory)
 
 Directories
+
 1. Create 'behavioral' directory within tom_loc folder to save behavioral data.
 2. Create 'data' directory for csv files.
 3. Within data directory, create 'boxplots' directory.
