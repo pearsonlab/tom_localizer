@@ -1,6 +1,8 @@
 # Tom_localizer
 
 Theory of Mind Localizer- Adapted from MATLAB code provided by Saxe Lab at MIT.
+http://saxelab.mit.edu/superloc.php
+http://saxelab.mit.edu/resources/papers/in_press/federetal.pdf
 
 1. tom_loc.py runs task/localizer in PsychoPy, saving json file to directory "behavioral"
 2. utils.py contains flicker function for photodiode recording of events
