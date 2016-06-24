@@ -6,8 +6,6 @@ import numpy as np
 
 from utils import flicker
 
-# Include random changes for ordering of trials, either first or second set first?
-
 class Stimuli:
 	def __init__(self, win, timing):
 		self.win = win
