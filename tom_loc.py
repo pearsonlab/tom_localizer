@@ -3,6 +3,7 @@ import json
 from psychopy import visual, gui, event, core
 import random
 import numpy as np
+import os
 
 from utils import flicker
 
@@ -35,7 +36,7 @@ class Stimuli:
 			self.win.flip()
 			self.win.flip()
 			return(quest_start, 'timeout', 'timeout')
-		elif key == 'escape':
+		elif 'escape' in key:
 			flicker(self.win, 0)
 			core.quit()
 		else:
