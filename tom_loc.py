@@ -192,6 +192,9 @@ def run():
 
 		core.wait(timing['delay'])
 		
+		if not os.path.exists('behavioral/'):
+			os.makedirs('behavioral')
+	
 		with open('behavioral/' + expname + '_' + str(sid)+ '.json', 'a') as f:
 			f.write(json.dumps(results[trial]))
 			f.write('\n')

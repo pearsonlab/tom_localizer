@@ -119,7 +119,10 @@ def plot_boxplot(belief, photo, correct, incorrect, belief_corr, photo_corr, tim
                    size = 12, transform=ax[2, 1].transAxes)
 
     fig.suptitle("Response Times for Trials", fontsize=12)
-
+    
+    if not os.path.exists('data/boxplots/'):
+		os.makedirs('data/boxplots/')
+	
     image_0 = filename.replace("data/ToM_Loc", "data/boxplots/Image")
     image = image_0.replace(".csv", "_bxplt.png")
     plt.savefig(image)

@@ -24,6 +24,10 @@ def make_dataframe(blocks):
 def make_csv(out_dataframe, file):
 	csv_file_pre = file.strip(".json")
 	csv_file = csv_file_pre.strip('behavioral')
+	
+	if not os.path.exists('data/'):
+		os.makedirs('data')
+	
 	pd.DataFrame.to_csv(out_dataframe, path_or_buf = "data" + csv_file + ".csv")
 
 if __name__ == "__main__":
