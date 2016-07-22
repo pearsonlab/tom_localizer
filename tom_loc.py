@@ -106,8 +106,8 @@ def run():
 	
 	win = get_window()
 	timing = {'fixation': 4.,
-				'story': (12.*speed),
-				'question': (4.*speed),
+				'story': (14.*speed),
+				'question': (7.*speed),
 				'delay': 4.}
 	
 	win.mouseVisible = False
