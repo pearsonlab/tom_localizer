@@ -4,7 +4,7 @@ import numpy as np
 def flicker(win, value):
     """
     Send a binary signal (value) to the photodiode by flickering a white
-    circle in the bottom right hand corner.
+    circle in the upper right hand corner.
     """
     timer = core.Clock()
     circle = visual.Circle(win, units='height', radius=0.05,

@@ -26,26 +26,25 @@ class Stimuli:
 
     def show_question(self, trial):
         text = self.text(trial)
-        quest_start = core.getTime()
-        self.win.flip()
+        quest_start = self.win.flip()
         offset = flicker(self.win, 4)
         key = event.waitKeys(
                     maxWait=self.timing['question'] - offset, keyList=self.keymap.keys() + ['escape'])
+        time_of_resp = core.getTime()
+        text.autoDraw = False
+
+        # I (JMP) spent *hours* on this and still cannot figure out why
+        # **three** flips/buffer clears are needed -- but they are
+        self.win.clearBuffer()
+        self.win.flip()
+        self.win.flip()
         if key is None:
-            text.autoDraw = False
-            self.win.flip()
-            self.win.flip()
             return(quest_start, 'timeout', 'timeout')
         elif 'escape' in key:
             flicker(self.win, 0)
             core.quit()
         else:
-            text.autoDraw = False
-            self.win.flip()
-            self.win.flip()
-            time_of_resp = core.getTime()
-            offset = flicker(self.win, 16)
-            self.win.flip()  # TODO: outcome period here
+            flicker(self.win, 16)
             return (quest_start, self.keymap[key[0]], time_of_resp)
 
     def text_and_stim_keypress(self, text, stim=None):
@@ -94,7 +93,7 @@ def get_settings():
 
 def get_window():
     return visual.Window(
-        winType='pyglet', monitor="testMonitor", units="pix", screen=1,
+        winType='pyglet', monitor="testMonitor", units="pix", screen=0,
         fullscr=True, colorSpace='rgb255', color=(0, 0, 0))
 
 def run():
@@ -106,10 +105,10 @@ def run():
         core.quit()
 
     win = get_window()
-    timing = {'fixation': 4.,
-                'story': (14.*speed),
-                'question': (7.*speed),
-                'delay': 4.}
+    timing = {'fixation': 2.,
+                'story': (5.*speed),
+                'question': (8.*speed),
+                'delay': 1.}
 
     win.mouseVisible = False
 
