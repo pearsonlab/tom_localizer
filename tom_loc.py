@@ -35,9 +35,10 @@ class Stimuli:
 
         # I (JMP) spent *hours* on this and still cannot figure out why
         # **three** flips/buffer clears are needed -- but they are
+        # version with only 1 buffer clear one flip works on JMP macbook pro
         self.win.clearBuffer()
         self.win.flip()
-        self.win.flip()
+        
         if key is None:
             return(quest_start, 'timeout', 'timeout')
         elif 'escape' in key:
