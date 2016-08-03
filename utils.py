@@ -7,10 +7,10 @@ def flicker(win, value):
     circle in the upper right hand corner.
     """
     timer = core.Clock()
-    circle = visual.Circle(win, units='height', radius=0.05,
+    circle = visual.Circle(win, units='height', radius=0.04,
                             fillColorSpace='rgb255',
                             lineColorSpace='rgb255',
-                            fillColor=(0, 0, 0), pos=(0.73, 0.42),
+                            fillColor=(0, 0, 0), pos=(0.84, 0.44),
                             lineColor=(0, 0, 0))
     value = np.binary_repr(value)
     # zero pad to 8 bits and add stop and start bits
