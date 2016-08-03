@@ -38,7 +38,8 @@ class Stimuli:
         # version with only 1 buffer clear one flip works on JMP macbook pro
         self.win.clearBuffer()
         self.win.flip()
-        
+        self.win.flip()  # needed on Dell but not Mac
+
         if key is None:
             return(quest_start, 'timeout', 'timeout')
         elif 'escape' in key:
