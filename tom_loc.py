@@ -4,14 +4,16 @@ from psychopy import visual, gui, event, core
 import random
 import numpy as np
 import os
+from datetime import datetime
 
 from utils import flicker
 
 class Stimuli:
-    def __init__(self, win, timing):
+    def __init__(self, win, timing, subjnum):
         self.win = win
         self.timing = timing
         self.keymap = {'left': 1, 'right': 0} #1 is True, 0 is False
+        self.subjnum = subjnum
 
     def show_story(self, trial):
         story_start = core.getTime()
@@ -44,6 +46,13 @@ class Stimuli:
             return(quest_start, 'timeout', 'timeout')
         elif 'escape' in key:
             flicker(self.win, 0)
+            
+            # Save end data
+            t = datetime.now()
+            day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
+            end_time = globalTimer.getTime()
+            save_data(day_time, end_time, self.subjnum)
+            
             core.quit()
         else:
             flicker(self.win, 16)
@@ -92,7 +101,20 @@ def get_settings():
         return dlg.data
     else:
         sys.exit()
+        
+def save_data(day_time, start_time, participant):
 
+    info = {}
+    info['wall_time'] = day_time
+    info['psychopy_time'] = start_time
+
+    if not os.path.exists('behavioral/'):
+            os.makedirs('behavioral')
+
+    with open('behavioral/ToM_Loc_'+ participant + '.json', 'a') as f:
+        f.write(json.dumps(info))
+        f.write('\n')
+        
 def get_window():
     return visual.Window(
         winType='pyglet', monitor="testMonitor", units="pix", screen=0,
@@ -101,6 +123,14 @@ def get_window():
 def run():
     (expname, sid, speed, run_num) = get_settings()
 
+    # Starting timers and save initial information
+    global globalTimer
+    globalTimer = core.Clock()
+    start_time = globalTimer.getTime()
+    t = datetime.now()
+    day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
+    save_data(day_time, start_time, sid)
+    
     if run_num == 1:
         pass
     else:
@@ -114,7 +144,7 @@ def run():
 
     win.mouseVisible = False
 
-    stim = Stimuli(win, timing)
+    stim = Stimuli(win, timing, sid)
 
     stim.text_and_stim_keypress('You are going to be reading a number of stories about\n'+
                                 'different people and places.\n\n'+
@@ -203,6 +233,13 @@ def run():
             f.write('\n')
         if trial == (len(results)-1):
             text = stim.text('Congratulations! You\'ve finished!')
+            
+            # Save end data
+            t = datetime.now()
+            day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
+            end_time = globalTimer.getTime()
+            save_data(day_time, end_time, sid)
+            
             win.flip()
             core.wait(timing['delay'])
             flicker(win, 0)
