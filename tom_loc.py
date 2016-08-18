@@ -6,7 +6,7 @@ import numpy as np
 import os
 from datetime import datetime
 
-from utils import flicker
+from utils import Flicker
 
 class Stimuli:
     def __init__(self, win, timing, subjnum):
@@ -14,12 +14,13 @@ class Stimuli:
         self.timing = timing
         self.keymap = {'left': 1, 'right': 0} #1 is True, 0 is False
         self.subjnum = subjnum
+        self.trigger = Flicker(self.win)
 
     def show_story(self, trial):
         story_start = core.getTime()
         text = self.text(trial)
         self.win.flip()
-        offset = flicker(self.win, 1)
+        offset = self.trigger.flicker_block(1)
         core.wait(self.timing['story'] - offset)
         text.autoDraw = False
         self.win.flip()
@@ -29,7 +30,7 @@ class Stimuli:
     def show_question(self, trial):
         text = self.text(trial)
         quest_start = self.win.flip()
-        offset = flicker(self.win, 4)
+        offset = self.trigger.flicker_block(4)
         key = event.waitKeys(
                     maxWait=self.timing['question'] - offset, keyList=self.keymap.keys() + ['escape'])
         time_of_resp = core.getTime()
@@ -45,17 +46,17 @@ class Stimuli:
         if key is None:
             return(quest_start, 'timeout', 'timeout')
         elif 'escape' in key:
-            flicker(self.win, 0)
-            
+            self.trigger.flicker_block(0)
+
             # Save end data
             t = datetime.now()
             day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
             end_time = globalTimer.getTime()
             save_data(day_time, end_time, self.subjnum)
-            
+
             core.quit()
         else:
-            flicker(self.win, 16)
+            self.trigger.flicker_block(16)
             return (quest_start, self.keymap[key[0]], time_of_resp)
 
     def text_and_stim_keypress(self, text, stim=None):
@@ -74,7 +75,7 @@ class Stimuli:
         self.win.flip()
         key = event.waitKeys()
         if key[0] == 'escape':
-            flicker(self.win, 0)
+            self.trigger.flicker_block(0)
             core.quit()
             self.win.flip()
         self.win.flip()
@@ -101,7 +102,7 @@ def get_settings():
         return dlg.data
     else:
         sys.exit()
-        
+
 def save_data(day_time, start_time, participant):
 
     info = {}
@@ -114,10 +115,10 @@ def save_data(day_time, start_time, participant):
     with open('behavioral/ToM_Loc_'+ participant + '.json', 'a') as f:
         f.write(json.dumps(info))
         f.write('\n')
-        
+
 def get_window():
     return visual.Window(
-        winType='pyglet', monitor="testMonitor", units="pix", screen=0,
+        winType='pyglet', monitor="testMonitor", units="pix", screen=1,
         fullscr=True, colorSpace='rgb255', color=(0, 0, 0))
 
 def run():
@@ -130,7 +131,7 @@ def run():
     t = datetime.now()
     day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
     save_data(day_time, start_time, sid)
-    
+
     if run_num == 1:
         pass
     else:
@@ -233,16 +234,15 @@ def run():
             f.write('\n')
         if trial == (len(results)-1):
             text = stim.text('Congratulations! You\'ve finished!')
-            
+
             # Save end data
             t = datetime.now()
             day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
             end_time = globalTimer.getTime()
             save_data(day_time, end_time, sid)
-            
+
             win.flip()
             core.wait(timing['delay'])
-            flicker(win, 0)
             core.quit()
 
 if __name__ == '__main__':
