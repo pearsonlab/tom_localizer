@@ -76,13 +76,16 @@ class Stimuli:
         key = event.waitKeys()
         if key[0] == 'escape':
             self.trigger.flicker_block(0)
-            core.quit()
-            self.win.flip()
-
+            
             t = datetime.now()
             day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
             end_time = globalTimer.getTime()
             save_data(day_time, end_time, self.subjnum)
+            
+            core.quit()
+            self.win.flip()
+
+            
             
         self.win.flip()
 
