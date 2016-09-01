@@ -78,6 +78,12 @@ class Stimuli:
             self.trigger.flicker_block(0)
             core.quit()
             self.win.flip()
+
+            t = datetime.now()
+            day_time = '%d:%d:%d:%d' % (t.hour, t.minute, t.second, t.microsecond)
+            end_time = globalTimer.getTime()
+            save_data(day_time, end_time, self.subjnum)
+            
         self.win.flip()
 
     def text(self, text):
