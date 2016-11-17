@@ -44,7 +44,8 @@ class Stimuli:
         self.win.flip()  # needed on Dell but not Mac
 
         if key is None:
-            return(quest_start, 'timeout', 'timeout')
+            self.trigger.flicker_block(32)
+            return(quest_start, 'timeout', time_of_resp)
         elif 'escape' in key:
             self.trigger.flicker_block(0)
 
@@ -221,6 +222,8 @@ def run():
             results[trial]['response'] = 'True'
         elif resp == 0:
             results[trial]['response'] = 'False'
+        elif resp == 'timeout':
+            results[trial]['response'] = 'timeout'
         else:
             results[trial]['response'] = 'Invalid'
 
@@ -228,10 +231,7 @@ def run():
         corr_resp = (results[trial]['response'] == results[trial]['answer'])
         results[trial]['corr_resp'] = corr_resp
 
-        if time_of_resp != 'timeout':
-            results[trial]['resp_time'] = time_of_resp - quest_start
-        else:
-            results[trial]['resp_time'] = time_of_resp
+        results[trial]['resp_time'] = time_of_resp - quest_start
 
         core.wait(timing['delay'])
 
